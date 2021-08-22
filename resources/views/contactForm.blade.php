@@ -3,10 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>HNG Resume CV Design</title>
-	<link rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css')}}">
 	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 </head>
 <style>
+    
     @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;700&display=swap');
 
 *{
@@ -268,13 +270,14 @@ input{
 	width: 200px;
 	height: 100px;
 }
+
 </style>
 <body>
 	<div class="wrapper">
 		<div class="resume">
 			<div class="left">
 				<div class="image__container">
-					<img src="/frontend/download.png" alt="HNG">
+					<img src="https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-exp1.licdn.com%2Fdms%2Fimage%2FC4D0BAQFjI11y8KvmRA%2Fcompany-logo_200_200%2F0%2F1565099198766%3Fe%3D2159024400%26v%3Dbeta%26t%3DbP0nSCXwaP5QLyVvs_w-1kW4Iw6660rDreQbBQzIpis&imgrefurl=https%3A%2F%2Fng.linkedin.com%2Fcompany%2Fhng-internship&tbnid=-si145ruoWl1rM&vet=12ahUKEwjhgJHticTyAhWSBhoKHUUNCXkQMygEegUIARCrAQ..i&docid=h0s1QwpePiCHdM&w=200&h=200&q=hng%20internship%20picture&ved=2ahUKEwjhgJHticTyAhWSBhoKHUUNCXkQMygEegUIARCrAQ" alt="HNG">
 					<p>Links</p>
 					<a href="https://zuri.team">https://zuri.team</a>
 					<br>
@@ -527,8 +530,18 @@ input{
 						</div>
 					</div>
 					<div class="form__container">
-						<form action="contact/create" method="post">
-                            @csrf
+                    <div class="card-body">
+                        
+                        @if(Session::has('success'))
+                        <div class="alert alert-success">
+                            {{ Session::get('success') }}
+                            @php
+                                Session::forget('success');
+                            @endphp
+                        </div>
+                        @endif
+						<form action="{{ route('contact-form.store') }}" method="post">
+                          {{ csrf_field() }}
 						  <div class="contact">
 							<h3>Leave a message</h3>
 						  </div>
@@ -536,33 +549,35 @@ input{
 							  <div class="lable__name">
 								<label for="name">Name :</label>
 							  </div>
-							<input type="text"  placeholder="Enter your name" name="name" />
+                              <input type="text" name="name" class="form-control" placeholder="Name" value="{{ old('name') }}">
+                                        @if ($errors->has('name'))
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
+                                        @endif
 						  </div>
 						  <div class="">
 							<div class="lable__email">
 								<label for="name">Email :</label>
 							  </div>
-							<input type="text" required placeholder="Enter your email" name="email"/>
+                              <input type="text" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+                                        @if ($errors->has('email'))
+                                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                                        @endif
 						  </div>
 						  <div class="">
-							<textarea
-							  name="message"
-							  id=""
-							  cols="30"
-							  rows="10"
-							  placeholder="Leave a message"
-							  required
-							></textarea>
+                          <textarea name="message" cols="30"
+                  rows="10" class="form-control">{{ old('message') }}</textarea>
+                                        @if ($errors->has('message'))
+                                            <span class="text-danger">{{ $errors->first('message') }}</span>
+                                        @endif
 						  </div>
-						  <div class="">
-							  <a href="/frontend/cong.html"><input type="button" value="Submit" name=""/></a>
-						  </div>
+                          <div class="form-group text-center">
+                                <button class="btn btn-dark btn-submit btn-block">Save</button>
+                            </div>
 						</form>
 					  </div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="/frontend/js.js"></script>
 </body>
 </html>
